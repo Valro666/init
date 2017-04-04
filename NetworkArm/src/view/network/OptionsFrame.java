@@ -1,8 +1,8 @@
-package view.network;
+package src.view.network;
 
 import java.awt.BorderLayout;
 
-import model.options.*;
+import src.model.options.*;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -23,7 +23,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import view.View;
+import src.view.View;
 
 @SuppressWarnings("serial")
 public class OptionsFrame extends JFrame implements Observer{

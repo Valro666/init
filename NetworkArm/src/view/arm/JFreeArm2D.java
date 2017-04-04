@@ -1,4 +1,4 @@
-package view.arm;
+package src.view.arm;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -13,11 +13,11 @@ import javax.swing.JPanel;
 
 import Jama.Matrix;
 import info.monitorenter.util.collections.RingBufferArrayFast;
-import model.LinkedEnvironment;
-import model.arm.FreeArm;
-import model.network.AbstractNetwork;
-import model.network.Neuron;
-import view.View;
+import src.model.LinkedEnvironment;
+import src.model.arm.FreeArm;
+import src.model.network.AbstractNetwork;
+import src.model.network.Neuron;
+import src.view.View;
 
 /**
  * Dessine le bras comme une suite de segments bleus. Les axes sont aussi
@@ -113,18 +113,27 @@ public class JFreeArm2D extends JPanel implements Observer {
 					neur = net.getNeurons().get(i).get(k);
 
 					// System.out.print("("+neur.getWeights().get(0)*echelle+";"+neur.getWeights().get(1)*echelle+")"+"|");
-
+                                        
 					g.fillOval((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
 							(int) (neur.getWeights().get(1) * this.getSize().getHeight()), 5, 5);
-
+                                        
+                                        
+                                        //g.fillOval(Math.round(neur.getWeights().get(0)) + 276, Math.round(neur.getWeights().get(1)) + 276, 5, 5);
+                                        
 					g.setColor(Color.BLUE);
-
+                                        
 					for (int j = 0; j < neur.getNeighbors().size(); j++) {
-
-						g.drawLine((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
+                                            /*
+						g.drawLine((int) (Math.round(neur.getWeights().get(0)) + 276),
+								(int) (Math.round(neur.getWeights().get(1)) + 276),
+								(int) (Math.round(neur.getNeighbors().get(j).getWeights().get(0)) + 276),
+								(int) (Math.round(neur.getNeighbors().get(j).getWeights().get(1)) + 276));
+                                                */
+                                                g.drawLine((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
 								(int) (neur.getWeights().get(1) * this.getSize().getHeight()),
 								(int) (neur.getNeighbors().get(j).getWeights().get(0) * this.getSize().getWidth()),
 								(int) (neur.getNeighbors().get(j).getWeights().get(1) * this.getSize().getHeight()));
+                                                
 					}
 				}
 			}
@@ -206,7 +215,7 @@ public class JFreeArm2D extends JPanel implements Observer {
 
 			FreeArm tmp = LinkedEnvironment.goal;
 			g.setColor(Color.GREEN);
-			g.fillOval(tmp.endX() + 281 - 5, tmp.endY() - 5 + 281, 10, 10);
+			g.fillOval(tmp.endX() + 276, tmp.endY() + 276, 10, 10);
 		}
 
 		// else
@@ -229,13 +238,15 @@ public class JFreeArm2D extends JPanel implements Observer {
 		// }
 		// pol++;
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(new Color(255, 0, 255));
+		
+                g2.setColor(Color.CYAN);
 		g2.drawLine(281, 281, arm.midX() + 281, arm.midY() + 281);
-		g.fillOval(arm.midX() + 281 - 3, arm.midY() + 281 - 3, 6, 6);
-		g2.setColor(Color.CYAN);
+		g.fillOval(arm.midX() + 276, arm.midY() + 276, 10, 10);
+		
 		g2.drawLine(arm.midX() + 281, arm.midY() + 281, arm.endX() + 281, arm.endY() + 281);
-		g.fillOval(arm.endX() + 281 - 5, arm.endY() + 281 - 5, 10, 10);
-
+                g2.setColor(Color.MAGENTA);
+		g.fillOval(arm.endX() + 276, arm.endY() + 276, 10, 10);
+                
 		// g2.setColor(Color.ORANGE);
 		// g.drawOval(281 - ((int) (arm.arm2 + arm.arm1) / 2), 281 - ((int)
 		// (arm.arm2 + arm.arm1) / 2),

@@ -1,4 +1,4 @@
-package view.network;
+package src.view.network;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import model.LinkedEnvironment;
-import view.View;
+import src.model.LinkedEnvironment;
+import src.view.View;
 
 @SuppressWarnings("serial")
 public class ButtonsPanel extends JPanel {

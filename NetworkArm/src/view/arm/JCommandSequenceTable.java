@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view.arm;
+package src.view.arm;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import model.arm.Command;
-import model.arm.Consignes;
+import src.model.arm.Command;
+import src.model.arm.Consignes;
 
 /**
  * @author Alain.Dutech@loria.fr

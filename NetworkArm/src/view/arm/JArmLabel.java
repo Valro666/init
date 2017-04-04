@@ -1,15 +1,15 @@
 /**
  * 
  */
-package view.arm;
+package src.view.arm;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JLabel;
 
-import model.arm.Arm;
-import utils.JamaU;
+import src.model.arm.Arm;
+import src.utils.JamaU;
 
 /**
  * Un JLabel qui affiche la position et la vitesse du bras.

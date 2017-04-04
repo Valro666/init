@@ -1,8 +1,8 @@
-package model.network;
+package src.model.network;
 
 import java.util.ArrayList;
 
-import model.options.*;
+import src.model.options.*;
 
 /**
  * 
@@ -43,9 +43,13 @@ public class DSOM extends AbstractMap {
 	    double distance_best = nearest.distanceToAll(data_set, data_priority);
 	    
 	    //We compute the topological distance of the winner
-	    int num_nearest_topo = nearest.getPosition(0) * colNumber + nearest.getPosition(1);
-	    double db = Math.pow(distance_best, 2);
 	    
+            int num_nearest_topo = nearest.getPosition(0) * colNumber + nearest.getPosition(1);
+	    //int num_nearest_topo = Math.round(nearest.getWeight(0)) * colNumber + Math.round(nearest.getWeight(1));
+            double db = Math.pow(distance_best, 2);
+	    
+            //System.out.println("nearest position : "+nearest.getWeight(0)+" , "+nearest.getWeight(1));
+            
 	    /*
 	     * We update weights of all neurons
 	     */
@@ -54,8 +58,10 @@ public class DSOM extends AbstractMap {
 	    for(ArrayList<Neuron> list : neurons) {
 			for(Neuron target : list){
 				
-				//We compute the topological distance of the target
+                            //We compute the topological distance of the target
 			    int num_target = target.getPosition(0) * colNumber + target.getPosition(1);
+                            
+                            //int num_target = Math.round(nearest.getWeight(0)) * colNumber + Math.round(nearest.getWeight(1));
 			    double distance_topo = distancesTopo[num_target][num_nearest_topo]/(colNumber + rowNumber);
 			    
 			    //We compute the neighborhood
@@ -67,18 +73,18 @@ public class DSOM extends AbstractMap {
 			    for(DataPoint point : data_set){
 			    	for(Float weight_data : point.getWeights()){
 			    		
-			    		double weight_neuron = target.getWeights().get(current_weight);
-			    		
-			    		//We compute the variation of the weight of the neuron.
-						double variation = Math.abs(weight_neuron - weight_data) * neighb * (weight_data - weight_neuron);
-						
-						//And finally we compute the new value of the weight of the neuron.
-						weight_neuron += DSOMOptions.epsilon*variation*data_priority[set];
-						
-						//We update the weight of the neuron
-						target.getWeights().set(current_weight, new Float(weight_neuron));
-						
-			    		current_weight++;
+                                    double weight_neuron = target.getWeights().get(current_weight);
+
+                                    //We compute the variation of the weight of the neuron.
+                                    double variation = Math.abs(weight_neuron - weight_data) * neighb * (weight_data - weight_neuron);
+
+                                    //And finally we compute the new value of the weight of the neuron.
+                                    weight_neuron += DSOMOptions.epsilon*variation*data_priority[set];
+
+                                    //We update the weight of the neuron
+                                    target.getWeights().set(current_weight, new Float(weight_neuron));
+
+                                    current_weight++;
 			    	}
 			    	
 			    	set++;

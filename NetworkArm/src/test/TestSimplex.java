@@ -1,7 +1,7 @@
-package test;
+package src.test;
 
-import algo.Simplex;
-import utils.JamaU;
+import src.algo.Simplex;
+import src.utils.JamaU;
 import Jama.Matrix;
 
 public class TestSimplex {

@@ -1,4 +1,4 @@
-package model.arm;
+package src.model.arm;
 
 import Jama.Matrix;
 //import utils.JamaU;

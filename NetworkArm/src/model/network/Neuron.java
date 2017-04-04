@@ -1,4 +1,4 @@
-package model.network;
+package src.model.network;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ public class Neuron {
 		for (int i = 0; i < grid_pos.length; i++) 
 			grid_positions.add(grid_pos[i]);
 		
-		for (int i=0;i<cardinal;i++){
+		for (int i=0; i<cardinal; i++){
 		    if (aleatoire) {
 		    	weights.add(new Float(Math.random()));
 		    } else {
@@ -227,13 +227,13 @@ public class Neuron {
     	return grid_positions.get(dimension);
     }
 	
-	public void set(Neuron n){
+    public void set(Neuron n){
     	grid_positions = n.grid_positions;
     	weights = n.weights;
     	neighbors = n.neighbors;
     }
 	
-	public ArrayList<Neuron> getNeighbors(){
+    public ArrayList<Neuron> getNeighbors(){
     	return neighbors;
     }
     

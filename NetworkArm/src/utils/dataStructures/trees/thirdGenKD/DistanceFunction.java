@@ -1,4 +1,4 @@
-package utils.dataStructures.trees.thirdGenKD;
+package src.utils.dataStructures.trees.thirdGenKD;
 
 public interface DistanceFunction {
     public double distance(double[] p1, double[] p2);

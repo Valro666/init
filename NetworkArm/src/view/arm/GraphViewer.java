@@ -1,4 +1,4 @@
-package view.arm;
+package src.view.arm;
 
 import info.monitorenter.gui.chart.*;
 import info.monitorenter.gui.chart.IAxis.AxisTitle;
@@ -13,11 +13,11 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import view.View;
-import view.network.JSpinSlider;
-import model.LinkedEnvironment;
-import model.network.Neuron;
-import model.options.GraphOptions;
+import src.view.View;
+import src.view.network.JSpinSlider;
+import src.model.LinkedEnvironment;
+import src.model.network.Neuron;
+import src.model.options.GraphOptions;
 
 @SuppressWarnings("serial")
 public class GraphViewer extends JPanel implements Observer{

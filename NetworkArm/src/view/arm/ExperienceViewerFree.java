@@ -1,4 +1,4 @@
-package view.arm;
+package src.view.arm;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,9 +6,9 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
-import model.arm.CompleteArm;
-import model.arm.FreeArm;
-import view.View;
+import src.model.arm.CompleteArm;
+import src.model.arm.FreeArm;
+import src.view.View;
 
 @SuppressWarnings("serial")
 public class ExperienceViewerFree extends JPanel {

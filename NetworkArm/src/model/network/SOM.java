@@ -1,7 +1,7 @@
-package model.network;
+package src.model.network;
 
 import java.util.ArrayList;
-import model.options.*;
+import src.model.options.*;
 
 /**
  * 
@@ -80,7 +80,11 @@ public class SOM extends AbstractMap{
 	    //We  get the nearest neuron
 	    Neuron nearest = winners.get(0);
 	    
-	    //We compute the topological distance between the datum and the winner
+            
+            //System.out.println(nearest.getPosition(0)+" , "+nearest.getPosition(1));
+	    
+
+            //We compute the topological distance between the datum and the winner
 	    int num_nearest_topo = nearest.getPosition(0) * colNumber + nearest.getPosition(1);
 	    
 	    /*
@@ -89,8 +93,11 @@ public class SOM extends AbstractMap{
 	    
 	    //We run through all neurons
 	    for(ArrayList<Neuron> neurons_list : neurons){
+                    
 			for(Neuron target : neurons_list){
-
+                            
+                            
+                            
 				//We get the topological position of the current neuron
 			    int num_target_topo =  target.getPosition(0) * colNumber + target.getPosition(1);
 			    

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test;
+package src.test;
 
 
 import java.io.OutputStream;
@@ -9,8 +9,8 @@ import java.io.PrintStream;
 
 import org.kohsuke.args4j.Option;
 
-import utils.IParameters;
-import utils.ParameterFactory;
+import src.utils.IParameters;
+import src.utils.ParameterFactory;
 
 /**
  * 

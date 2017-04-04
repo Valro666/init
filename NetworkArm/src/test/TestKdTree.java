@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test;
+package src.test;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -12,9 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import utils.dataStructures.trees.thirdGenKD.KdTree;
-import utils.dataStructures.trees.thirdGenKD.NearestNeighborIterator;
-import utils.dataStructures.trees.thirdGenKD.SquareEuclideanDistanceFunction;
+import src.utils.dataStructures.trees.thirdGenKD.KdTree;
+import src.utils.dataStructures.trees.thirdGenKD.NearestNeighborIterator;
+import src.utils.dataStructures.trees.thirdGenKD.SquareEuclideanDistanceFunction;
 
 /**
  * @author dutech

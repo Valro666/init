@@ -1,4 +1,4 @@
-package view.arm;
+package src.view.arm;
 
 
 import java.awt.Dimension;
@@ -10,7 +10,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import model.options.ArmOptions;
+import src.model.options.ArmOptions;
 
 @SuppressWarnings("serial")
 public class ArmOptionsFrame extends JFrame{

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package utils.dataStructures.trees.thirdGenKD;
+package src.utils.dataStructures.trees.thirdGenKD;
 
 import java.util.Iterator;
 import java.util.LinkedList;

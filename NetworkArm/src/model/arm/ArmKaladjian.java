@@ -1,13 +1,13 @@
 /**
  * 
  */
-package model.arm;
+package src.model.arm;
 
 import java.text.DecimalFormat;
 import java.util.Vector;
 
-import utils.JamaU;
-import algo.Simplex;
+import src.utils.JamaU;
+import src.algo.Simplex;
 import Jama.Matrix;
 
 /**

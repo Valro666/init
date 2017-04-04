@@ -1,4 +1,4 @@
-package view.arm;
+package src.view.arm;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.Observer;
 import javax.swing.*;
 import javax.swing.table.*;
 
-import model.arm.CompleteArm;
+import src.model.arm.CompleteArm;
 
 /**
  * 

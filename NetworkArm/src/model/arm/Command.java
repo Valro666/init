@@ -1,7 +1,7 @@
 /**
  * 
  */
-package model.arm;
+package src.model.arm;
 
 import java.text.DecimalFormat;
 

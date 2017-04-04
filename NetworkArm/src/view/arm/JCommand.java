@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view.arm;
+package src.view.arm;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,8 +10,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import model.arm.Command;
-import model.arm.CommandSequence;
+import src.model.arm.Command;
+import src.model.arm.CommandSequence;
  
 /**
  * @author alain.dutech@loria.fr

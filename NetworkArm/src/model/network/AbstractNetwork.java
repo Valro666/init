@@ -1,9 +1,9 @@
-package model.network;
+package src.model.network;
 
 import java.util.ArrayList;
 import java.util.Observable;
 
-import model.options.*;
+import src.model.options.*;
 
 /**
  * 
@@ -44,7 +44,7 @@ public abstract class AbstractNetwork extends Observable{
     	epochs = BasicOptions.nb_epochs;
     	
     	nb_neurons = 0;
-		neurons = new ArrayList<ArrayList<Neuron>>();
+	neurons = new ArrayList<ArrayList<Neuron>>();
 		
     }
     

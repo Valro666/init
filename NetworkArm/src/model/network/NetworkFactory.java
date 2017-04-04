@@ -1,6 +1,6 @@
-package model.network;
+package src.model.network;
 
-import model.LinkedEnvironment;
+import src.model.LinkedEnvironment;
 
 /**
  * A Factory to create algos automatically

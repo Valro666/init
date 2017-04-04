@@ -1,9 +1,9 @@
 /**
  * 
  */
-package algo;
+package src.algo;
 
-import utils.JamaU;
+import src.utils.JamaU;
 import Jama.Matrix;
 
 /**

@@ -1,12 +1,12 @@
-package utils.dataStructures.trees.thirdGenKD;
+package src.utils.dataStructures.trees.thirdGenKD;
 
 
 import java.util.Arrays;
 import java.util.Iterator;
 
-import utils.dataStructures.BinaryHeap;
-import utils.dataStructures.IntervalHeap;
-import utils.dataStructures.MinHeap;
+import src.utils.dataStructures.BinaryHeap;
+import src.utils.dataStructures.IntervalHeap;
+import src.utils.dataStructures.MinHeap;
 
 /**
  *

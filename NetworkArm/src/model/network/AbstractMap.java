@@ -1,7 +1,7 @@
-package model.network;
+package src.model.network;
 
 import java.util.ArrayList;
-import model.options.*;
+import src.model.options.*;
 
 /**
  * 
@@ -57,29 +57,31 @@ public abstract class AbstractMap extends AbstractNetwork{
      */
 	public void fill() {
     	
-    	nb_neurons = rowNumber * colNumber;
+            nb_neurons = rowNumber * colNumber;
     	
-    	//We create the number of neurons we need. 
-		for(int k=0;k<rowNumber;k++) {
-    		neurons.add(new ArrayList<Neuron>());
-    		for(int k1=0;k1<colNumber;k1++){
-    			neurons.get(k).add(new Neuron(nb_dimensions, new int[]{k, neurons.get(k).size()}, getAleatory()));
-    		}
-    	}
+            
+            
+            //We create the number of neurons we need. 
+            for(int k=0;k<rowNumber;k++) {
+                neurons.add(new ArrayList<Neuron>());
+                for(int k1=0;k1<colNumber;k1++){
+                        neurons.get(k).add(new Neuron(nb_dimensions, new int[]{k, neurons.get(k).size()}, getAleatory()));
+                }
+            }
 	
-		// We create the topology.
-		setNeighbors();
-	
-		//Finally, we compute topological distances. 
-		for (int i=0;i<neurons.size();i++){
-		    for (int j=0 ;j<neurons.get(i).size();j++) {
-				for(int k = 0 ; k < neurons.size() ; k ++) {
-				    for(int l = 0 ; l <neurons.get(k).size(); l++) {
-				    	distancesTopo[i*colNumber +j][k*colNumber +l] = distance_neighbor(neurons.get(i).get(j), neurons.get(k).get(l));
-				    }
-				}
-		    }
-		}
+            // We create the topology.
+            setNeighbors();
+
+            //Finally, we compute topological distances. 
+            for (int i=0;i<neurons.size();i++){
+                for (int j=0 ;j<neurons.get(i).size();j++) {
+                            for(int k = 0 ; k < neurons.size() ; k ++) {
+                                for(int l = 0 ; l <neurons.get(k).size(); l++) {
+                                    distancesTopo[i*colNumber +j][k*colNumber +l] = distance_neighbor(neurons.get(i).get(j), neurons.get(k).get(l));
+                                }
+                            }
+                }
+            }
 	}
 	
 	public void setNeighbors(){

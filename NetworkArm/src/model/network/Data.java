@@ -1,6 +1,6 @@
-package model.network;
+package src.model.network;
 
-import model.options.*;
+import src.model.options.*;
 import java.util.ArrayList;
 
 /**

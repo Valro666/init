@@ -1,8 +1,8 @@
-package utils.dataStructures.trees.thirdGenKD;
+package src.utils.dataStructures.trees.thirdGenKD;
 
-import utils.dataStructures.BinaryHeap;
-import utils.dataStructures.MaxHeap;
-import utils.dataStructures.MinHeap;
+import src.utils.dataStructures.BinaryHeap;
+import src.utils.dataStructures.MaxHeap;
+import src.utils.dataStructures.MinHeap;
 
 
 /**

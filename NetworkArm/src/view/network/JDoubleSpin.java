@@ -1,4 +1,4 @@
-package view.network;
+package src.view.network;
 
 import java.awt.Dimension;
 import javax.swing.JFormattedTextField;

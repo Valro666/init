@@ -1,13 +1,13 @@
 /**
  * 
  */
-package test;
+package src.test;
 
 import java.io.IOException;
 
-import utils.JamaU;
+import src.utils.JamaU;
 import Jama.Matrix;
-import utils.RLink;
+import src.utils.RLink;
 
 /**
  * The aim is to test the interface, through files, with the 'R software'

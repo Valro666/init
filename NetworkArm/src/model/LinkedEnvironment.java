@@ -1,20 +1,20 @@
-package model;
+package src.model;
 
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
 import Jama.Matrix;
-import model.arm.CompleteArm;
-import model.arm.FreeArm;
-import model.network.AbstractNetwork;
-import model.network.Data;
-import model.network.DataPoint;
-import model.network.NetworkFactory;
-import model.network.Neuron;
-import model.network.SOM;
-import model.options.BasicOptions;
-import model.options.GraphOptions;
+import src.model.arm.CompleteArm;
+import src.model.arm.FreeArm;
+import src.model.network.AbstractNetwork;
+import src.model.network.Data;
+import src.model.network.DataPoint;
+import src.model.network.NetworkFactory;
+import src.model.network.Neuron;
+import src.model.network.SOM;
+import src.model.options.BasicOptions;
+import src.model.options.GraphOptions;
 
 /**
  * 
@@ -117,13 +117,14 @@ public class LinkedEnvironment extends Observable implements Runnable {
 			data[i] = new Data(dimensions_each_data[i]);
 
 		}
-
+                /*
 		// We decrease the value of commands
 		for (DataPoint dp : data[1].getDataPoints()) {
 			for (int i = 0; i < dp.getWeights().size(); i++) {
 				dp.setWeight(i, new Float(dp.getWeight(i) * 0.1));
 			}
 		}
+                */
 		env = this;
 		// We create the common neural network
 		network = new SOM(nb_dim);
@@ -161,11 +162,18 @@ public class LinkedEnvironment extends Observable implements Runnable {
 	}
 
 	public void step() {
-
+                
+                /*
+                for(int i=0; i<network.getNeurons().size(); i++){
+                    System.out.println ("best : "+network.getNeurons().get(i).get(i).getWeight(0)+" , "+network.getNeurons().get(i).get(i).getWeight(1));
+                }
+                */
 		/*
 		 * We choose a command in data.
 		 */
-		int hazard_index = (int) (Math.random() * data[1].size());
+		
+                /*
+                int hazard_index = (int) (Math.random() * data[1].size());
 		DataPoint command = data[1].get(hazard_index);
 
 		// We transform the datapoint into a matrix.
@@ -174,7 +182,7 @@ public class LinkedEnvironment extends Observable implements Runnable {
 		for (int i = 0; i < command.getWeights().size(); i++) {
 			matrix_comm.set(0, i, command.getWeight(i));
 		}
-
+                */
 		/*
 		 * We move the arm with this command.
 		 */
@@ -184,12 +192,15 @@ public class LinkedEnvironment extends Observable implements Runnable {
 				l2 = (int) (Math.random() * 151);
 
 		goal = new FreeArm(ep, cou, l1, l2);
-		// System.out.println(goal);
-
-		// System.out.println(goal.endX() + " " + goal.endY());
-		// System.out.println(free);
+		
+                //System.out.println(goal.endX() + " , " + goal.endY()+" ==> "+goal.getPosX() + " , " + goal.getPosY());
+		
+		
 
 		free.apply(goal);
+                
+                
+                
 		// BasicOptions.stopped.setBool(free.apply(goal));
 		/*
 		 * We get the new position of the arm.
@@ -199,7 +210,7 @@ public class LinkedEnvironment extends Observable implements Runnable {
 		// double pos_y_norm = arm.getArm().getArmEndPointY();
 
 		double freeX;
-
+                
 		/*
 		 * We change the normalization to have the same normalization as the
 		 * network.
@@ -216,31 +227,54 @@ public class LinkedEnvironment extends Observable implements Runnable {
 		// pos_x_norm += 0.5;
 		// pos_y_norm += 0.5;
 
-		ArrayList<Float> pos = new ArrayList<Float>();
+		ArrayList<Float> pos = new ArrayList<>();
+                
+                
+                
+                pos.add(new Float(goal.getPosX()));
+                pos.add(new Float(goal.getPosY()));
 
-		// pos.add(new Float(pos_x_norm));
-		// pos.add(new Float(pos_y_norm));
 
+                ArrayList<Float> freecommand = new ArrayList<>();
+
+                freecommand.add(new Float(goal.arm1));
+                freecommand.add(new Float(goal.arm2));
+                freecommand.add(new Float(goal.coude));
+                freecommand.add(new Float(goal.epaule));
+                 
+                 //pos.add(new Float(goal.endX()));
+		 //pos.add(new Float(goal.endY()));
+                 
 		DataPoint position = new DataPoint(pos);
 
+                DataPoint command_data = new DataPoint(freecommand);
 		/*
 		 * We get the winner neuron in those two data.
 		 */
 		// We create an array of all datapoints we want to approach.
 		ArrayList<DataPoint> dataset = new ArrayList<DataPoint>();
 		dataset.add(position);
-		dataset.add(command);
+		dataset.add(command_data);
 
 		ArrayList<Neuron> winners = getNearestInAllData(network.getNbNeuronForLearning(), dataset);
 
+                
+                //System.out.println("winner end : "+winners.get(0).get);
+                
 		/*
 		 * We compute the error between the position in the neuron and the real
 		 * position.
 		 */
-
+                
+                System.out.println(winners.get(0).getWeight(0)+" "+winners.get(0).getWeight(1));
 		// The first neuron is the really best.
 		Neuron best = new Neuron(winners.get(0).getWeights(0, 1));
-		// error = best.distance(position);
+                
+                
+                
+                
+                
+                error = best.distance(position);
 
 		/*
 		 * We compute the error between the position of the arm and the
@@ -254,12 +288,10 @@ public class LinkedEnvironment extends Observable implements Runnable {
 			winners_for_approx.set(i, new Neuron(winners_for_approx.get(i).getWeights(0, 1)));
 
 		// We get their barycenter
-		// Neuron barycenter = Neuron.getBarycenter(position,
-		// winners_for_approx);
+		Neuron barycenter = Neuron.getBarycenter(position, winners_for_approx);
 
 		// Now we compute the error
-		// error_approx = barycenter.distance(position);
-
+		error_approx = barycenter.distance(position);
 		/*
 		 * We make a step of the learning with these winners.
 		 */

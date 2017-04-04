@@ -1,14 +1,14 @@
 /**
  * 
  */
-package view.arm;
+package src.view.arm;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
-import model.arm.Command;
-import model.arm.CommandSequence;
+import src.model.arm.Command;
+import src.model.arm.CommandSequence;
 
 /**
  * Un spécialisation de TableModel pour pouvoir utiliser une JTable

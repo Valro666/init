@@ -1,13 +1,19 @@
-package view;
+package src.view;
 
 import java.util.*;
 import javax.swing.*;
 
-import model.*;
-import model.options.*;
+import src.model.*;
+import src.model.options.*;
 import view.arm.*;
 import view.network.*;
-import control.*;
+import src.control.*;
+import src.view.arm.ArmOptionsFrame;
+import src.view.arm.ExperienceViewer;
+import src.view.arm.ExperienceViewerFree;
+import src.view.network.ButtonsPanel;
+import src.view.network.JRadioList;
+import src.view.network.OptionsFrame;
 
 @SuppressWarnings("serial")
 public class FreeView extends JFrame implements Observer {
@@ -34,6 +40,7 @@ public class FreeView extends JFrame implements Observer {
 		//draw = new ExperienceViewer(world.getArm(), this, world.getSize());
 
 		freedraw.free.addObserver(freedraw.getCommandViewer());
+                
 		world.getNet().addObserver(freedraw.getArm2D());
 		world.addObserver(freedraw.getGraph());
 

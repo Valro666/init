@@ -1,4 +1,4 @@
-package model.network;
+package src.model.network;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package view.network;
+package src.view.network;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,9 +13,9 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import model.LinkedEnvironment;
-import model.network.Data;
-import model.network.Neuron;
+import src.model.LinkedEnvironment;
+import src.model.network.Data;
+import src.model.network.Neuron;
 
 
 @SuppressWarnings("serial")
@@ -43,10 +43,10 @@ public class NetworkDraw extends JPanel{
     public void saveImage(String path, String type){
     	
     	BufferedImage image = new BufferedImage(600,600, BufferedImage.TYPE_INT_RGB);
-		Graphics g2 = image.createGraphics();
+	Graphics g2 = image.createGraphics();
     	paint(g2);
 		
-		try{
+	try{
     		ImageIO.write(image, type, new File(path+(nb_draw++)+"."+type));
     	} catch (Exception e) { 
     		e.printStackTrace(); 
@@ -93,7 +93,9 @@ public class NetworkDraw extends JPanel{
 										
 					g2.fillOval ((int)(neur.getWeights().get(0)*echelle), (int)(neur.getWeights().get(1)*echelle),5,5) ;
 			
-					g2.setPaint(Color.BLUE);
+					
+                                        
+                                        g2.setPaint(Color.BLUE);
 			
 					for(int j=0;j<neur.getNeighbors().size();j++){
 					    Line2D.Double l = 

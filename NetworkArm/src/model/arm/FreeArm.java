@@ -1,17 +1,17 @@
-package model.arm;
+package src.model.arm;
 
 import java.util.Arrays;
 import java.util.Observable;
 
 import Jama.Matrix;
-import model.LinkedEnvironment;
+import src.model.LinkedEnvironment;
 
 public class FreeArm extends Observable {
 
 	public double epaule, coude;
-	public double arm1, arm2;
+	public float arm1, arm2;
 
-	int x, y;
+	double x, y;
 
 	Arm arm;
 
@@ -19,11 +19,20 @@ public class FreeArm extends Observable {
 
 	private String last_command;
 
+        
+        public double getPosX() {
+            return x;
+	}
+
+	public double getPosY() {
+            return y;
+	}
+        
+        
 	public int midX() {
 
 		int rep = 0;
 		rep = (int) (Math.cos(Math.toRadians(epaule)) * arm1);
-		x = rep;
 		return rep;
 	}
 
@@ -31,7 +40,6 @@ public class FreeArm extends Observable {
 
 		int rep = 0;
 		rep = (int) (Math.sin(Math.toRadians(epaule)) * arm1);
-		y = rep;
 		return rep;
 	}
 
@@ -57,6 +65,7 @@ public class FreeArm extends Observable {
 		coude = 0;
 		arm1 = 100;
 		arm2 = 100;
+                updatePosition();
 
 	}
 
@@ -66,7 +75,7 @@ public class FreeArm extends Observable {
 		coude = cou;
 		arm1 = l1;
 		arm2 = l2;
-
+                updatePosition();
 	}
 
 	public void setup(double ang0, double ang1) {
@@ -108,7 +117,9 @@ public class FreeArm extends Observable {
 
 			applyCommand((int) goal.epaule, (int) goal.coude, (int) goal.arm1, (int) goal.arm2);
 			// elapsed_time += dt;
-
+                        
+                        updatePosition();
+                        
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -124,8 +135,6 @@ public class FreeArm extends Observable {
 				}
 			}
 
-			// System.out.println(this.midX() + " " + goal.midX() + " | " +
-			// this.midY() + " " + goal.midY());
 		}
 
 		return true;
@@ -179,22 +188,17 @@ public class FreeArm extends Observable {
 
 	public void applyCommand(int ep, int cou, int l1, int l2) {
 
-		if (ep != epaule) {
-			if (ep >= epaule) {
-				epaule++;
-			} else {
-				epaule--;
-			}
-		}
+                if (cou > coude)
+                    coude++;
+		else if(cou != coude)
+                    coude--;
+            
+                if (ep > epaule) 
+                    epaule++;
+                else if(ep != epaule)
+                    epaule--;
 
-		if (cou != coude) {
-			if (cou >= coude) {
-				coude++;
-			} else {
-				coude--;
-			}
-		}
-
+		
 		if (l1 != arm1) {
 			if (l1 > arm1) {
 				arm1++;
@@ -202,7 +206,7 @@ public class FreeArm extends Observable {
 				arm1--;
 			}
 		}
-
+                
 		if (l2 != arm2) {
 			if (l2 > arm2) {
 				arm2++;
@@ -210,7 +214,8 @@ public class FreeArm extends Observable {
 				arm2--;
 			}
 		}
-
+                
+                
 		// for (int i = 0; i < _nc.length; i++) {
 		// _nc[i].applyCommand(comm.get(0, i), dt);
 		// _act.set(0, i, _nc[i].getAct());
@@ -233,5 +238,12 @@ public class FreeArm extends Observable {
 				+ ", y=" + y + ", _arm=" + arm + ", _nc=" + Arrays.toString(_nc) + ", last_command=" + last_command
 				+ "]";
 	}
+
+    private void updatePosition() {
+        
+        x = (endX()+300.0)/600.0;
+        y = (endY()+300.0)/600.0;
+        
+    }
 
 }

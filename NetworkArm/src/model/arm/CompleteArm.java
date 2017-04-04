@@ -1,4 +1,4 @@
-package model.arm;
+package src.model.arm;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Observable;
 
 import javax.vecmath.Point3d;
 
-import utils.JamaU;
+import src.utils.JamaU;
 import Jama.Matrix;
 
 /**

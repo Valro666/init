@@ -1,4 +1,4 @@
-package model.arm;
+package src.model.arm;
 
 /**
  * Constraints to apply on the arm. Composed by angular bounds of acceleration,

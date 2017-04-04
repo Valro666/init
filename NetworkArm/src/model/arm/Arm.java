@@ -1,13 +1,13 @@
 /**
  * 
  */
-package model.arm;
+package src.model.arm;
 
 import java.util.ArrayList;
 
 import javax.vecmath.Point3d;
 
-import utils.JamaU;
+import src.utils.JamaU;
 import Jama.Matrix;
 
 

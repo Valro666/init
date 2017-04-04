@@ -1,4 +1,4 @@
-package utils.dataStructures.trees.thirdGenKD;
+package src.utils.dataStructures.trees.thirdGenKD;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

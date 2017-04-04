@@ -1,4 +1,4 @@
-package view.arm;
+package src.view.arm;
 
 import info.monitorenter.util.collections.RingBufferArrayFast;
 
@@ -14,12 +14,12 @@ import java.util.Observer;
 
 import javax.swing.JPanel;
 
-import view.View;
+import src.view.View;
 import Jama.Matrix;
-import model.network.Neuron;
-import model.arm.ArmConstraints;
-import model.arm.ArmModel;
-import model.network.AbstractNetwork;
+import src.model.network.Neuron;
+import src.model.arm.ArmConstraints;
+import src.model.arm.ArmModel;
+import src.model.network.AbstractNetwork;
 
 /**
  * Dessine le bras comme une suite de segments bleus. Les axes sont aussi

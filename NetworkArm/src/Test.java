@@ -1,6 +1,8 @@
+package src;
 
 
-import view.arm.ExperienceViewer;
+
+import src.view.arm.ExperienceViewer;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -14,9 +16,9 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 import Jama.Matrix;
-import model.arm.CommandSequence;
-import model.arm.CompleteArm;
-import model.arm.Consignes;
+import src.model.arm.CommandSequence;
+import src.model.arm.CompleteArm;
+import src.model.arm.Consignes;
 
 public class Test {
 	

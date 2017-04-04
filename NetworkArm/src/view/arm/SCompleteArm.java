@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view.arm;
+package src.view.arm;
 
 import java.text.DecimalFormat;
 import java.util.Observable;
@@ -10,9 +10,9 @@ import java.util.Observer;
 import javax.vecmath.Point3d;
 
 import Jama.Matrix;
-import model.arm.Arm;
-import model.arm.CompleteArm;
-import model.arm.NeuroControl;
+import src.model.arm.Arm;
+import src.model.arm.CompleteArm;
+import src.model.arm.NeuroControl;
 
 /**
  * Observe the CompleteArm as a one ligne String.

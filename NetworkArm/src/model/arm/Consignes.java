@@ -1,7 +1,7 @@
 /**
  * 
  */
-package model.arm;
+package src.model.arm;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -90,15 +90,15 @@ public class Consignes extends Observable {
 	 */
 	public void write(String fileName) throws IOException {
 		FileWriter myFile = new FileWriter( fileName );
-        BufferedWriter myWriter = new BufferedWriter( myFile );
-        
-        // Need to write 6 CommandSequence
-        for (int i = 0; i < _comSeq.length; i++) {
-        	_comSeq[i].write(myWriter);
-		}
-        
-        myWriter.close();
-        myFile.close();
+                BufferedWriter myWriter = new BufferedWriter( myFile );
+
+                // Need to write 6 CommandSequence
+                for (int i = 0; i < _comSeq.length; i++) {
+                    _comSeq[i].write(myWriter);
+                }
+
+                myWriter.close();
+                myFile.close();
 	}
 
 }

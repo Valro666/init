@@ -1,7 +1,7 @@
 /**
  * 
  */
-package view.arm;
+package src.view.arm;
 
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.ITrace2D;
@@ -34,10 +34,10 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
-import model.arm.Command;
-import model.arm.CommandSequence;
-import model.arm.Consignes;
-import utils.GraphicHelper;
+import src.model.arm.Command;
+import src.model.arm.CommandSequence;
+import src.model.arm.Consignes;
+import src.utils.GraphicHelper;
 
 /**
  * @author alain.dutech@loria.fr
