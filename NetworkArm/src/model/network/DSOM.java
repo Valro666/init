@@ -39,16 +39,20 @@ public class DSOM extends AbstractMap {
 	    //We get the neuron which is the nearest to this piece of data
 	    Neuron nearest = winners.get(0);
 	    
+            
+            
 	    //We compute the distance between the neuron and the piece of data
 	    double distance_best = nearest.distanceToAll(data_set, data_priority);
 	    
+            //System.out.println("distance best : "+distance_best);
+            
 	    //We compute the topological distance of the winner
 	    
             int num_nearest_topo = nearest.getPosition(0) * colNumber + nearest.getPosition(1);
 	    //int num_nearest_topo = Math.round(nearest.getWeight(0)) * colNumber + Math.round(nearest.getWeight(1));
             double db = Math.pow(distance_best, 2);
 	    
-            //System.out.println("nearest position : "+nearest.getWeight(0)+" , "+nearest.getWeight(1));
+           //System.out.println("nearest position : "+nearest.getWeight(0)+" , "+nearest.getWeight(1));
             
 	    /*
 	     * We update weights of all neurons

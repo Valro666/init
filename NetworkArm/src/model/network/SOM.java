@@ -80,8 +80,6 @@ public class SOM extends AbstractMap{
 	    //We  get the nearest neuron
 	    Neuron nearest = winners.get(0);
 	    
-            
-            //System.out.println(nearest.getPosition(0)+" , "+nearest.getPosition(1));
 	    
 
             //We compute the topological distance between the datum and the winner

@@ -165,7 +165,7 @@ public class LinkedEnvironment extends Observable implements Runnable {
                 
                 /*
                 for(int i=0; i<network.getNeurons().size(); i++){
-                    System.out.println ("best : "+network.getNeurons().get(i).get(i).getWeight(0)+" , "+network.getNeurons().get(i).get(i).getWeight(1));
+                    System.out.println ("neuron : "+network.getNeurons().get(i).get(i).getWeight(0)+" , "+network.getNeurons().get(i).get(i).getWeight(1));
                 }
                 */
 		/*
@@ -237,10 +237,10 @@ public class LinkedEnvironment extends Observable implements Runnable {
 
                 ArrayList<Float> freecommand = new ArrayList<>();
 
-                freecommand.add(new Float(goal.arm1));
-                freecommand.add(new Float(goal.arm2));
-                freecommand.add(new Float(goal.coude));
-                freecommand.add(new Float(goal.epaule));
+                freecommand.add(goal.arm1/150);
+                freecommand.add(goal.arm2/150);
+                freecommand.add(new Float(goal.coude/360));
+                freecommand.add(new Float(goal.epaule/360));
                  
                  //pos.add(new Float(goal.endX()));
 		 //pos.add(new Float(goal.endY()));
@@ -266,7 +266,7 @@ public class LinkedEnvironment extends Observable implements Runnable {
 		 * position.
 		 */
                 
-                System.out.println(winners.get(0).getWeight(0)+" "+winners.get(0).getWeight(1));
+                System.out.println(winners.get(0));
 		// The first neuron is the really best.
 		Neuron best = new Neuron(winners.get(0).getWeights(0, 1));
                 
@@ -308,6 +308,7 @@ public class LinkedEnvironment extends Observable implements Runnable {
 	 *            of all points we want to approach
 	 * @return The best neurons in all sets.
 	 */
+        
 	public ArrayList<Neuron> getNearestInAllData(int nb_neurons_to_find, ArrayList<DataPoint> dataset) {
 
 		ArrayList<Neuron> neuron_list = new ArrayList<Neuron>();

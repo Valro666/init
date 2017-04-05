@@ -78,11 +78,11 @@ public class JFreeArm2D extends JPanel implements Observer {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		g.fillRect(0, 0, 1000, 1000);
+		g.fillRect(0, 0, (int)this.getSize().getWidth(), (int) (this.getSize().getHeight()));
 		g.setColor(Color.orange);
 		// Essayer de tracer une croix -1,1; -1,1
-		g.drawLine(281, 0, 281, 281 * 3);
-		g.drawLine(0, 281, 281 * 3, 281);
+		g.drawLine((int) (this.getSize().getWidth()/2), 0, (int) (this.getSize().getWidth()/2), (int) this.getSize().getHeight());
+		g.drawLine(0, (int) (this.getSize().getHeight()/2), (int) this.getSize().getWidth(), (int) (this.getSize().getHeight()/2));
 		// Zone accessible
 		// drawReachingArea(g);
 
@@ -113,10 +113,14 @@ public class JFreeArm2D extends JPanel implements Observer {
 					neur = net.getNeurons().get(i).get(k);
 
 					// System.out.print("("+neur.getWeights().get(0)*echelle+";"+neur.getWeights().get(1)*echelle+")"+"|");
+                                       
                                         
 					g.fillOval((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
 							(int) (neur.getWeights().get(1) * this.getSize().getHeight()), 5, 5);
                                         
+                                        
+                                        //System.out.println("position : "+(int) (neur.getWeights().get(0) * this.getSize().getWidth())+" , "+
+						//	(int) (neur.getWeights().get(1) * this.getSize().getHeight()));
                                         
                                         //g.fillOval(Math.round(neur.getWeights().get(0)) + 276, Math.round(neur.getWeights().get(1)) + 276, 5, 5);
                                         
@@ -215,7 +219,7 @@ public class JFreeArm2D extends JPanel implements Observer {
 
 			FreeArm tmp = LinkedEnvironment.goal;
 			g.setColor(Color.GREEN);
-			g.fillOval(tmp.endX() + 276, tmp.endY() + 276, 10, 10);
+			g.fillOval(tmp.endX() + (int) (this.getSize().getWidth()/2), tmp.endY() + (int) (this.getSize().getHeight()/2), 10, 10);
 		}
 
 		// else
@@ -238,14 +242,14 @@ public class JFreeArm2D extends JPanel implements Observer {
 		// }
 		// pol++;
 		Graphics2D g2 = (Graphics2D) g;
-		
+                
                 g2.setColor(Color.CYAN);
-		g2.drawLine(281, 281, arm.midX() + 281, arm.midY() + 281);
-		g.fillOval(arm.midX() + 276, arm.midY() + 276, 10, 10);
+		g2.drawLine((int) (this.getSize().getWidth()/2), (int) (this.getSize().getHeight()/2), arm.midX() + (int) (this.getSize().getWidth()/2), arm.midY() + (int) (this.getSize().getHeight()/2));
+		g.fillOval(arm.midX() + (int) (this.getSize().getWidth()/2) - 5, arm.midY() + (int) (this.getSize().getHeight()/2) - 5, 10, 10);
 		
-		g2.drawLine(arm.midX() + 281, arm.midY() + 281, arm.endX() + 281, arm.endY() + 281);
+		g2.drawLine(arm.midX() + (int) (this.getSize().getWidth()/2), arm.midY() + (int) (this.getSize().getHeight()/2), arm.endX() + (int) (this.getSize().getWidth()/2), arm.endY() + (int) (this.getSize().getHeight()/2));
                 g2.setColor(Color.MAGENTA);
-		g.fillOval(arm.endX() + 276, arm.endY() + 276, 10, 10);
+		g.fillOval(arm.endX() + (int) (this.getSize().getWidth()/2) - 5, arm.endY() + (int) (this.getSize().getHeight()/2) - 5, 10, 10);
                 
 		// g2.setColor(Color.ORANGE);
 		// g.drawOval(281 - ((int) (arm.arm2 + arm.arm1) / 2), 281 - ((int)

@@ -33,6 +33,7 @@ public class NetworkDraw extends JPanel{
 		this.echelle = size;
 		this.setPreferredSize(new Dimension(size, size));
 		nb_draw = 0;
+                
 		
     }
     
