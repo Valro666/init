@@ -105,7 +105,7 @@ public class View extends JFrame implements Observer {
 
 		freedraw.repaint();
 
-		// We verify if there is a process is occurring
+		// We verify if there is a process occurring
 		if (BasicOptions.stopped.bool()) {
 			buttons.change(false);
 			options.setDisabled(false);

@@ -17,7 +17,7 @@ public class Main {
 		}
 		
 		View v = new View(world);
-
+                world.addObserver(v);
     }
     
 }

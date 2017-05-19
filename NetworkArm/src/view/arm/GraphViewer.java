@@ -33,7 +33,6 @@ public class GraphViewer extends JPanel implements Observer{
 	public GraphViewer(View v, Dimension dim){
 		
 		super();
-		
 		holder=v;
 		
 		setPreferredSize(dim);
@@ -85,6 +84,8 @@ public class GraphViewer extends JPanel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		
+            
+		System.out.println("Graph viewer update");
 		LinkedEnvironment env = (LinkedEnvironment) o;
 		
 		int elapsed_examples = env.getExamples();

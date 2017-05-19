@@ -115,8 +115,8 @@ public class JFreeArm2D extends JPanel implements Observer {
 					// System.out.print("("+neur.getWeights().get(0)*echelle+";"+neur.getWeights().get(1)*echelle+")"+"|");
                                        
                                         
-					g.fillOval((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
-							(int) (neur.getWeights().get(1) * this.getSize().getHeight()), 5, 5);
+					g.fill3DRect((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
+							(int) (neur.getWeights().get(1) * this.getSize().getHeight()), 6, 6, true);
                                         
                                         
                                         //System.out.println("position : "+(int) (neur.getWeights().get(0) * this.getSize().getWidth())+" , "+
@@ -124,7 +124,7 @@ public class JFreeArm2D extends JPanel implements Observer {
                                         
                                         //g.fillOval(Math.round(neur.getWeights().get(0)) + 276, Math.round(neur.getWeights().get(1)) + 276, 5, 5);
                                         
-					g.setColor(Color.BLUE);
+					g.setColor(Color.blue);
                                         
 					for (int j = 0; j < neur.getNeighbors().size(); j++) {
                                             /*
@@ -219,7 +219,7 @@ public class JFreeArm2D extends JPanel implements Observer {
 
 			FreeArm tmp = LinkedEnvironment.goal;
 			g.setColor(Color.GREEN);
-			g.fillOval(tmp.endX() + (int) (this.getSize().getWidth()/2), tmp.endY() + (int) (this.getSize().getHeight()/2), 10, 10);
+			g.fillOval(tmp.endX() + (int) (this.getSize().getWidth()/2)-5, tmp.endY() + (int) (this.getSize().getHeight()/2)-5, 10, 10);
 		}
 
 		// else

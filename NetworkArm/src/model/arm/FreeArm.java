@@ -5,6 +5,7 @@ import java.util.Observable;
 
 import Jama.Matrix;
 import src.model.LinkedEnvironment;
+import src.model.network.Neuron;
 
 public class FreeArm extends Observable {
 
@@ -102,6 +103,24 @@ public class FreeArm extends Observable {
 
 	}
 
+        
+        public void apply(Neuron goal) {
+            this.arm1 = goal.getWeight(2)*150;
+            this.arm2 = goal.getWeight(3)*150;
+            this.coude = goal.getWeight(4)*360;
+            this.epaule = goal.getWeight(5)*360;
+            
+            updatePosition();
+            setChanged();
+            notifyObservers();         
+            
+            try {
+                    Thread.sleep(200);
+            } catch (InterruptedException e) {
+                    e.printStackTrace();
+            }
+        }
+        
 	public boolean apply(FreeArm goal) {
 
 		// Matrix previous_pos = new Matrix(0, 0);

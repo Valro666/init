@@ -132,7 +132,6 @@ public class LinkedEnvironment extends Observable implements Runnable {
 		// We create the arm we will move
 		// arm = new CompleteArm();
 		free = new FreeArm();
-
 	}
 
 	@Override
@@ -197,7 +196,7 @@ public class LinkedEnvironment extends Observable implements Runnable {
 		
 		
 
-		free.apply(goal);
+		
                 
                 
                 
@@ -258,6 +257,8 @@ public class LinkedEnvironment extends Observable implements Runnable {
 
 		ArrayList<Neuron> winners = getNearestInAllData(network.getNbNeuronForLearning(), dataset);
 
+                
+                free.apply(winners.get(0));
                 
                 //System.out.println("winner end : "+winners.get(0).get);
                 
