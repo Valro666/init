@@ -30,7 +30,7 @@ public class DSOM extends AbstractMap {
     
     @Override
     public boolean getAleatory(){
-    	return false;
+    	return true;
     }
     
     @Override

@@ -26,6 +26,8 @@ public class Neuron {
      * The number of positions depends on the number of dimensions of the world. 
      */
     private ArrayList<Integer> grid_positions;
+    
+    private int number;
 
     public Neuron(int cardinal, int[] grid_pos, boolean aleatoire){
 		weights   = new ArrayList<Float>();
@@ -40,8 +42,7 @@ public class Neuron {
 		    } else {
 		    	weights.add(new Float(.5));
 		    }
-		}
-		
+		}		
     }
     
     public Neuron(double... weight){
@@ -57,6 +58,16 @@ public class Neuron {
     	weights = w;
     	
     	grid_positions = new ArrayList<Integer>();
+    }
+    
+    public void setNumber(int n)
+    {
+    	number = n;
+    }
+    
+    public int getNumber()
+    {
+    	return number;
     }
     
     @Override
@@ -92,8 +103,23 @@ public class Neuron {
      */
     public double distance(DataPoint data) {
 		double res = 0.0;
-		
 		for(int i=0;i<weights.size();i++){
+		    res += Math.pow(weights.get(i) - data.getWeight(i), 2);
+		}
+		
+		res = Math.sqrt(res);
+		
+		return res;
+    }
+    
+    /**
+     * Return the manhattan distance between the neuron and the piece of data. 
+     * @param data The piece of data. 
+     * @return The distance between the neuron and the data. 
+     */
+    public double distance(DataPoint data, int start, int end) {
+		double res = 0.0;
+		for(int i=start;i<=end;i++){
 		    res += Math.pow(weights.get(i) - data.getWeight(i), 2);
 		}
 		
@@ -129,6 +155,30 @@ public class Neuron {
     	
     	return dist;
     }
+    /**
+     * Return the manhattan distance between the neuron and all pieces of data for only weights whose index is between i and j.
+     * @param dataset The set of data.
+     * @return The distance.
+     */
+	public double distanceToAll(ArrayList<DataPoint> dataset, double[] data_priority, int xi, int xj) {
+    	double dist = 0;
+    	int current_weight = xi;
+    	
+    	for(int i=0; i<dataset.size(); i++){
+    		for(int j = xi; j <= xj; j++){
+    			Float weight = dataset.get(i).getWeight(j);
+    			dist += Math.pow(weights.get(current_weight) - weight, 2);
+    			current_weight++;
+    		}
+    		
+    		double priority = data_priority[i];
+    		dist*=priority;
+    	}
+    	
+    	dist = Math.sqrt(dist);
+    	
+    	return dist;
+	}
     
     /**
      * Compute the neuron equivalent to the barycenter of all neurons in parameters.
@@ -158,6 +208,63 @@ public class Neuron {
     		}
     		
     		weights.add(new Float(weight));
+    	}
+    	
+    	barycenter = new Neuron(weights);
+    	
+    	return barycenter;
+    }
+    
+    /**
+     * Compute the neuron equivalent to the barycenter of all neurons in parameters.
+     * @param neurons The neurons we want to get the barycenter.
+     * @return The barycenter of neurons.
+     */
+    public static Neuron getBarycenter(DataPoint dp, int xi, int xj, Neuron... neurons){
+    	Neuron barycenter;
+    	
+    	//We compute the weighting of each neuron
+    	ArrayList<Double> weightings = new ArrayList<Double>();
+    	double dist=0, global_dist = 0.0, test = 0.0;
+    	int index = 0;
+    	int size = neurons[0].getWeights().size();
+    	
+    	for(Neuron n : neurons){
+    		dist = n.distance(dp, xi, xj);
+    		weightings.add((dist > 0) ? 1.0/dist : Double.MAX_VALUE);
+    		global_dist += weightings.get(index);
+    		index++;
+    	}
+    	
+    	for(int i = 0; i < weightings.size(); i++) {
+    		Double d = new Double(weightings.get(i)/global_dist);
+    		weightings.set(i, d);
+    	}
+    	
+    	//We compute the weights of the new neuron
+    	ArrayList<Float> weights = new ArrayList<Float>();
+    	for(int i=0; i<2; i++){
+    		double weight=0;
+    		
+    		int j=0;
+    		for(Neuron n : neurons){
+    			weight += weightings.get(j).doubleValue() * n.getWeight(i);
+    			j++;
+    		}
+    		
+    		weights.add(new Float((float)weight));
+    	}
+    	for(int i=2; i<size; i++){
+    		double weightx=0, weighty=0;
+    		
+    		int j=0;
+    		for(Neuron n : neurons){
+    			weightx += weightings.get(j).doubleValue() * Math.cos(Math.toRadians((n.getWeight(i)*360)));
+    			weighty += weightings.get(j).doubleValue() * Math.sin(Math.toRadians((n.getWeight(i)*360)));
+    			j++;
+    		}
+    		double weight = Math.toDegrees(Math.atan2(weighty, weightx))/360.0;
+    		weights.add(new Float((float)weight));
     	}
     	
     	barycenter = new Neuron(weights);

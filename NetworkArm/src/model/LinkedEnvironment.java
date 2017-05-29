@@ -8,6 +8,7 @@ import Jama.Matrix;
 import src.model.arm.CompleteArm;
 import src.model.arm.FreeArm;
 import src.model.network.AbstractNetwork;
+import src.model.network.DSOM;
 import src.model.network.Data;
 import src.model.network.DataPoint;
 import src.model.network.NetworkFactory;
@@ -59,6 +60,13 @@ public class LinkedEnvironment extends Observable implements Runnable {
 	 * neuron.
 	 */
 	private double error;
+	
+	private double lambda = 0.90;
+	private double sumoferrors = 0;
+	private double previous_errors[];
+	private int next_index_error = 0;
+	
+	private static int speed = 1;
 
 	/**
 	 * The errors between the position of the arm and the barycenter the winner
@@ -72,8 +80,14 @@ public class LinkedEnvironment extends Observable implements Runnable {
 	private int examples;
 
 	public FreeArm free;
-
+	
 	public static FreeArm goal;
+	
+	public static ArrayList<Neuron> vainqueurs;
+	
+	public static Neuron barycenter;
+	
+	public static boolean modedefonctionnement = true;
 
 	/**
 	 * Link different environments with the same network. (Example :
@@ -127,11 +141,14 @@ public class LinkedEnvironment extends Observable implements Runnable {
                 */
 		env = this;
 		// We create the common neural network
-		network = new SOM(nb_dim);
+		network = new DSOM(nb_dim);
 
 		// We create the arm we will move
 		// arm = new CompleteArm();
 		free = new FreeArm();
+		
+		previous_errors = new double[100];
+
 	}
 
 	@Override
@@ -141,6 +158,15 @@ public class LinkedEnvironment extends Observable implements Runnable {
 
 		BasicOptions.stopped.setBool(false);
 		// change();
+		for (ArrayList<Neuron> ln : network.getNeurons()){
+			for (Neuron n : ln) {
+				ArrayList<Float> weights = n.getWeights();
+				//FreeArm test = new FreeArm((int)(weights.get(2)*360),(int)(weights.get(3)*360),150,150);
+				weights.set(0, 0.5f);
+				weights.set(1, 0.5f);
+				n.setWeights(weights);
+			}
+		}
 
 		while (!BasicOptions.stopped.bool()) {
 			// checkPause();
@@ -187,51 +213,96 @@ public class LinkedEnvironment extends Observable implements Runnable {
 		 */
 		// arm.apply(matrix_comm, ArmOptions.max_time, ArmOptions.move_time);
 
-		int ep = (int) (Math.random() * 361), cou = (int) (Math.random() * 361), l1 = (int) (Math.random() * 151),
+		/*int ep = (int) (Math.random() * 361), cou = (int) (Math.random() * 361), l1 = (int) (Math.random() * 151),
 				l2 = (int) (Math.random() * 151);
-
-		goal = new FreeArm(ep, cou, l1, l2);
 		
+
+		*/
                 //System.out.println(goal.endX() + " , " + goal.endY()+" ==> "+goal.getPosX() + " , " + goal.getPosY());
-		
-		
+		ArrayList<Float> pC = null;
+		//Premier mode de fonctionnement : Algorithme principale avec parcours aléatoire des X
+		if (modedefonctionnement) {
+			pC = free.getRandomReachablePoint();
+			DataPoint positionC = new DataPoint(pC);
+			ArrayList<DataPoint> datasetC = new ArrayList<DataPoint>();
+			datasetC.add(positionC);
+			
+			ArrayList<Neuron> winnersC = getNearestInEyeNetwork(GraphOptions.nb_neurons_approx,datasetC);
+			vainqueurs = winnersC;
+			barycenter = Neuron.getBarycenter(positionC, 0, 1, winnersC.toArray(new Neuron[1]));
+			ArrayList<Float> goal = barycenter.getWeights();
+			this.goal = new FreeArm(pC.get(0), pC.get(1));
+			free.apply(goal,50);
+		//Second mode de fonctionnement : parcours aléatoire des angles pour que l'algo ne se retrouve pas bloqué
+		} else {
 
+			ArrayList<Float> pER = free.getRandomReachablePoint();
+			this.goal = new FreeArm((int)((double)pER.get(2)*360), (int)((double)pER.get(3)*360),150,150);
+			free.apply(pER,50);
+		}
 		
+		
+		ArrayList<Float> pR = free.getPosition();
+		DataPoint positionR = new DataPoint(pR);
+		ArrayList<Float> cR = new ArrayList<Float>();
+		cR.add(pR.get(2));
+		cR.add(pR.get(3));
+		DataPoint commandR = new DataPoint(cR);
+		ArrayList<DataPoint> datasetR = new ArrayList<DataPoint>();
+		datasetR.add(positionR);
+		datasetR.add(commandR);
+		
+		ArrayList<Neuron> winnersP = getNearestInAllData(GraphOptions.nb_neurons_approx,datasetR);
+		Neuron winnerP = null;
+		if (!modedefonctionnement) {
+			vainqueurs = winnersP;
+			barycenter = Neuron.getBarycenter(positionR,0,1, winnersP.toArray(new Neuron[1]));
+			winnerP = barycenter;
+		} else 
+			winnerP = winnersP.get(0);
+		network.step(winnersP, datasetR, data_priority);   
+	
                 
-                
-                
+		examples++;
+		if (modedefonctionnement && pC != null) {
+			error = lambda * error + distance(pC,pR,0,1);
+			error_approx = lambda * error_approx + distance(pR,barycenter.getWeights(),0,1);}
+		else{
+			error = 0;//distance(pR,barycenter.getWeights(),0,1);
+			error_approx = 0;}//arycenter.distance(choosenPosition);}
+			sumoferrors = sumoferrors - previous_errors[next_index_error] + error;
+			previous_errors[next_index_error] = error;
+			next_index_error++;
+			if (next_index_error >= 100)
+				next_index_error = 0;
+			setChanged();
+			notifyObservers();
+			Thread t = Thread.currentThread();
+			try {
+				t.sleep(speed);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		
 		// BasicOptions.stopped.setBool(free.apply(goal));
 		/*
 		 * We get the new position of the arm.
 		 */
 		// We get normalized positions.
-		// double pos_x_norm = arm.getArm().getArmEndPointX();
-		// double pos_y_norm = arm.getArm().getArmEndPointY();
 
-		double freeX;
-                
 		/*
 		 * We change the normalization to have the same normalization as the
 		 * network.
 		 */
 
-		// We set the same dimensions
-		// pos_x_norm /= 2;
-		// pos_y_norm /= 2;
+		// We set the same dimensions 
 
-		// We reverse the y
-		// pos_y_norm *= -1;
-
-		// We move the point (0,0) to the left-up corner
-		// pos_x_norm += 0.5;
-		// pos_y_norm += 0.5;
-
-		ArrayList<Float> pos = new ArrayList<>();
+		/*ArrayList<Float> pos = new ArrayList<>();
                 
                 
                 
-                pos.add(new Float(goal.getPosX()));
-                pos.add(new Float(goal.getPosY()));
+                pos.add(new Float((float)pos_x_norm));
+                pos.add(new Float((float)pos_y_norm));
 
 
                 ArrayList<Float> freecommand = new ArrayList<>();
@@ -239,26 +310,24 @@ public class LinkedEnvironment extends Observable implements Runnable {
                 freecommand.add(goal.arm1/150);
                 freecommand.add(goal.arm2/150);
                 freecommand.add(new Float(goal.coude/360));
-                freecommand.add(new Float(goal.epaule/360));
+                freecommand.add(new Float(goal.epaule/360));*/
                  
                  //pos.add(new Float(goal.endX()));
 		 //pos.add(new Float(goal.endY()));
                  
-		DataPoint position = new DataPoint(pos);
+		//DataPoint position = new DataPoint(pos);
 
-                DataPoint command_data = new DataPoint(freecommand);
+         //       DataPoint command_data = new DataPoint(freecommand);
 		/*
 		 * We get the winner neuron in those two data.
 		 */
 		// We create an array of all datapoints we want to approach.
-		ArrayList<DataPoint> dataset = new ArrayList<DataPoint>();
+	/*	ArrayList<DataPoint> dataset = new ArrayList<DataPoint>();
 		dataset.add(position);
 		dataset.add(command_data);
 
-		ArrayList<Neuron> winners = getNearestInAllData(network.getNbNeuronForLearning(), dataset);
+		ArrayList<Neuron> winners = getNearestInAllData(network.getNbNeuronForLearning(), dataset);*/
 
-                
-                free.apply(winners.get(0));
                 
                 //System.out.println("winner end : "+winners.get(0).get);
                 
@@ -267,7 +336,7 @@ public class LinkedEnvironment extends Observable implements Runnable {
 		 * position.
 		 */
                 
-                System.out.println(winners.get(0));
+       /* System.out.println(winners.get(0));
 		// The first neuron is the really best.
 		Neuron best = new Neuron(winners.get(0).getWeights(0, 1));
                 
@@ -282,22 +351,32 @@ public class LinkedEnvironment extends Observable implements Runnable {
 		 * barycenter winners.
 		 */
 
-		ArrayList<Neuron> winners_for_approx = getNearestInAllData(GraphOptions.nb_neurons_approx, dataset);
+		//ArrayList<Neuron> winners_for_approx = getNearestInAllData(GraphOptions.nb_neurons_approx, dataset);
 
 		// We transform it into (x, y) neurons
-		for (int i = 0; i < winners_for_approx.size(); i++)
-			winners_for_approx.set(i, new Neuron(winners_for_approx.get(i).getWeights(0, 1)));
+		//for (int i = 0; i < winners_for_approx.size(); i++)
+		//	winners_for_approx.set(i, new Neuron(winners_for_approx.get(i).getWeights(0, 1)));
 
 		// We get their barycenter
-		Neuron barycenter = Neuron.getBarycenter(position, winners_for_approx);
+		//Neuron barycenter = Neuron.getBarycenter(position, winners_for_approx);
 
 		// Now we compute the error
-		error_approx = barycenter.distance(position);
+		//error_approx = barycenter.distance(position);
 		/*
 		 * We make a step of the learning with these winners.
 		 */
-		network.step(winners, dataset, data_priority);
+		//network.step(winners, dataset, data_priority);
 
+	}
+	
+	public double distance(ArrayList<Float> f1, ArrayList<Float> f2, int x1,int x2) {
+		double res = 0.0;
+		for(int i=x1;i<=x2;i++){
+		    res += Math.pow(f1.get(i) - f2.get(i), 2);
+		}
+		
+		res = Math.sqrt(res);
+		return res;
 	}
 
 	/**
@@ -334,6 +413,64 @@ public class LinkedEnvironment extends Observable implements Runnable {
 				}
 			}
 
+			neuron_list.add(winner);
+		}
+
+		return neuron_list;
+	}
+	
+	public ArrayList<Neuron> getNearestInEyeNetwork(int nb_neurons_to_find, ArrayList<DataPoint> dataset) {
+
+		ArrayList<Neuron> neuron_list = new ArrayList<Neuron>();
+
+		for (int i = 0; i < nb_neurons_to_find; i++) {
+
+			Neuron winner = null;
+			double best_distance = Double.MAX_VALUE;
+
+			// We run through all neurons
+			for (ArrayList<Neuron> list : network.getNeurons()) {
+				for (Neuron current_neuron : list) {
+
+					// We compute the distance between all data and the current
+					// neuron.
+					double dist = current_neuron.distanceToAll(dataset, data_priority,0 ,1);
+					if (dist < best_distance && !neuron_list.contains(current_neuron)) {
+						best_distance = dist;
+						winner = current_neuron;
+					}
+				}
+			}
+
+			neuron_list.add(winner);
+		}
+
+		return neuron_list;
+	}	
+	
+	public ArrayList<Neuron> getNearestInMotorNetwork(int nb_neurons_to_find, ArrayList<DataPoint> dataset) {
+
+		ArrayList<Neuron> neuron_list = new ArrayList<Neuron>();
+
+		for (int i = 0; i < nb_neurons_to_find; i++) {
+
+			Neuron winner = null;
+			double best_distance = Double.MAX_VALUE;
+
+			// We run through all neurons
+			for (ArrayList<Neuron> list : network.getNeurons()) {
+				for (Neuron current_neuron : list) {
+
+					// We compute the distance between all data and the current
+					// neuron.
+					double dist = current_neuron.distanceToAll(dataset, data_priority,0 ,1);
+
+					if (dist < best_distance && !neuron_list.contains(current_neuron)) {
+						best_distance = dist;
+						winner = current_neuron;
+					}
+				}
+			}
 			neuron_list.add(winner);
 		}
 
@@ -479,13 +616,13 @@ public class LinkedEnvironment extends Observable implements Runnable {
 	}
 
 	public double getError_approx() {
-		return error_approx;
+		return error_approx/ 100;
 	}
 
 	public void setError_approx(double error_approx) {
 		this.error_approx = error_approx;
 	}
-
+	
 	public FreeArm getFree() {
 		return free;
 	}
@@ -516,6 +653,14 @@ public class LinkedEnvironment extends Observable implements Runnable {
 
 	public void setExamples(int examples) {
 		this.examples = examples;
+	}
+
+	public static void changeMode() {
+		modedefonctionnement = !modedefonctionnement;		
+	}
+
+	public static void setSpeed(double s) {
+		speed = (int) (1000/s);		
 	}
 
 }

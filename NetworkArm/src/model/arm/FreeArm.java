@@ -1,11 +1,12 @@
 package src.model.arm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
+import java.util.Random;
 
 import Jama.Matrix;
 import src.model.LinkedEnvironment;
-import src.model.network.Neuron;
 
 public class FreeArm extends Observable {
 
@@ -21,7 +22,7 @@ public class FreeArm extends Observable {
 	private String last_command;
 
         
-        public double getPosX() {
+    public double getPosX() {
             return x;
 	}
 
@@ -47,15 +48,35 @@ public class FreeArm extends Observable {
 	public int endX() {
 
 		int rep = 0;
-		rep = (int) (Math.cos(Math.toRadians(coude)) * arm2);
+		rep = (int) (Math.cos(Math.toRadians(epaule + coude)) * arm2);
 		rep = rep + midX();
 		return rep;
+	}
+	
+	public double normMidX() {
+		double l = arm1+arm2;
+		return (midX()+l)/(2*l);
+	}
+	
+	public double normMidY() {
+		double l = arm1+arm2;
+		return (midY()+l)/(2*l);
+	}
+	
+	public double normEndX() {
+		double l = arm1+arm2;
+		return (endX()+l)/(2*l);
+	}
+	
+	public double normEndY() {
+		double l = arm1+arm2;
+		return (endY()+l)/(2*l);
 	}
 
 	public int endY() {
 
 		int rep = 0;
-		rep = (int) (Math.sin(Math.toRadians(coude)) * arm2);
+		rep = (int) (Math.sin(Math.toRadians(epaule + coude)) * arm2);
 		rep = rep + midY();
 		return rep;
 	}
@@ -64,9 +85,9 @@ public class FreeArm extends Observable {
 
 		epaule = 0;
 		coude = 0;
-		arm1 = 100;
-		arm2 = 100;
-                updatePosition();
+		arm1 = 150;
+		arm2 = 150;
+        updatePosition();
 
 	}
 
@@ -76,7 +97,15 @@ public class FreeArm extends Observable {
 		coude = cou;
 		arm1 = l1;
 		arm2 = l2;
-                updatePosition();
+        updatePosition();
+    }
+
+	public FreeArm(Float float1, Float float2) {
+		arm1 = 100;
+		arm2 = 100;
+		float l = (float)(arm1+arm2);
+		x = float1;// * (2*l))-l;
+		y = float2;// * (2*l))-l;
 	}
 
 	public void setup(double ang0, double ang1) {
@@ -103,25 +132,7 @@ public class FreeArm extends Observable {
 
 	}
 
-        
-        public void apply(Neuron goal) {
-            this.arm1 = goal.getWeight(2)*150;
-            this.arm2 = goal.getWeight(3)*150;
-            this.coude = goal.getWeight(4)*360;
-            this.epaule = goal.getWeight(5)*360;
-            
-            updatePosition();
-            setChanged();
-            notifyObservers();         
-            
-            try {
-                    Thread.sleep(200);
-            } catch (InterruptedException e) {
-                    e.printStackTrace();
-            }
-        }
-        
-	public boolean apply(FreeArm goal) {
+	public boolean apply(ArrayList<Float> goal, int wait_time) {
 
 		// Matrix previous_pos = new Matrix(0, 0);
 		// Matrix current_pos = _arm.getArmPos();
@@ -129,12 +140,15 @@ public class FreeArm extends Observable {
 		// last_command = matrixToString(comm);
 
 		double elapsed_time = 0.0;
-
+		
+		epaule = (double) (goal.get(2))*360;
+		coude = (double) (goal.get(3))*360;
+		/*
 		boolean arret = false;
-
+		
 		while (!arret) {
 
-			applyCommand((int) goal.epaule, (int) goal.coude, (int) goal.arm1, (int) goal.arm2);
+			applyCommand(goal.get(0), goal.get(1));
 			// elapsed_time += dt;
                         
                         updatePosition();
@@ -154,13 +168,14 @@ public class FreeArm extends Observable {
 				}
 			}
 
-		}
-
+		}*/
+		updatePosition();
+		setChanged();
+		notifyObservers();
 		return true;
-
 	}
 
-	public void applyCommand2(int ep, int cou, int l1, int l2) {
+	public void applyCommand2(int ep, int cou) {
 
 		if (ep != epaule) {
 			if (ep >= epaule) {
@@ -178,21 +193,6 @@ public class FreeArm extends Observable {
 			}
 		}
 
-		if (l1 != arm1) {
-			if (l1 > arm1) {
-				arm1++;
-			} else {
-				arm1--;
-			}
-		}
-
-		if (l2 != arm2) {
-			if (l2 > arm2) {
-				arm2++;
-			} else {
-				arm2--;
-			}
-		}
 
 		// for (int i = 0; i < _nc.length; i++) {
 		// _nc[i].applyCommand(comm.get(0, i), dt);
@@ -205,7 +205,7 @@ public class FreeArm extends Observable {
 		// return applyActivation(_act, dt);
 	}
 
-	public void applyCommand(int ep, int cou, int l1, int l2) {
+	public void applyCommand(int ep, int cou) {
 
                 if (cou > coude)
                     coude++;
@@ -216,24 +216,7 @@ public class FreeArm extends Observable {
                     epaule++;
                 else if(ep != epaule)
                     epaule--;
-
-		
-		if (l1 != arm1) {
-			if (l1 > arm1) {
-				arm1++;
-			} else {
-				arm1--;
-			}
-		}
-                
-		if (l2 != arm2) {
-			if (l2 > arm2) {
-				arm2++;
-			} else {
-				arm2--;
-			}
-		}
-                
+              
                 
 		// for (int i = 0; i < _nc.length; i++) {
 		// _nc[i].applyCommand(comm.get(0, i), dt);
@@ -259,10 +242,42 @@ public class FreeArm extends Observable {
 	}
 
     private void updatePosition() {
-        
-        x = (endX()+300.0)/600.0;
-        y = (endY()+300.0)/600.0;
+
+		double l =  (arm1 + arm2);
+        x = (endX()+l)/(2*l);
+        y = (endY()+l)/(2*l);
         
     }
 
+	public ArrayList<Float> getRandomReachablePoint() {
+		float[] res = new float[4];
+		float l =  (float) (arm1 + arm2);
+		boolean reachable = false;
+		Random r = new Random();
+		do {
+			res[0] = (r.nextFloat() * l * 2) - l;
+			res[1] = (r.nextFloat() * l * 2) - l;
+			double hypo = Math.sqrt(res[0]*res[0] + res[1]*res[1]);
+			if (hypo <= l)
+				reachable = true;
+		} while (!reachable);
+		res[2] = r.nextFloat();
+		res[3] = r.nextFloat();
+		ArrayList<Float> lr = new ArrayList<Float>();
+		lr.add((res[0]+l)/(2*l));
+		lr.add((res[1]+l)/(2*l));
+		lr.add((res[2]));
+		lr.add((res[3]));
+		return lr;
+	}
+
+	public ArrayList<Float> getPosition() {
+		ArrayList<Float> res = new ArrayList<Float>();
+		float l = (float)(arm1+arm2);
+		res.add((float)getPosX());
+		res.add((float)getPosY());
+		res.add((float)epaule/360.f);
+		res.add((float)coude/360.f);
+		return res;
+	}
 }

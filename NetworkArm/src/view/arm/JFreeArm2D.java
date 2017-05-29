@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
@@ -16,6 +17,7 @@ import info.monitorenter.util.collections.RingBufferArrayFast;
 import src.model.LinkedEnvironment;
 import src.model.arm.FreeArm;
 import src.model.network.AbstractNetwork;
+import src.model.network.DataPoint;
 import src.model.network.Neuron;
 import src.view.View;
 
@@ -104,19 +106,35 @@ public class JFreeArm2D extends JPanel implements Observer {
 		 
 		
 		AbstractNetwork net = parent.getWorld().getNet();
-
+		ArrayList<Neuron> winners = LinkedEnvironment.vainqueurs;
+		neur = LinkedEnvironment.barycenter;
+		if (neur != null) {
+			g.setColor(Color.orange);
+			g.fillOval((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
+					(int) (neur.getWeights().get(1) * this.getSize().getHeight()), 5, 5);
+			g.setColor(Color.pink);
+			for (int j = 0; j < winners.size(); j++) {
+				    g.drawLine((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
+					(int) (neur.getWeights().get(1) * this.getSize().getHeight()),
+					(int) (winners.get(j).getWeights().get(0) * this.getSize().getWidth()),
+					(int) (winners.get(j).getWeights().get(1) * this.getSize().getHeight()));
+			}
+		}
 		if (net != null && net.size() != 0) {
 			for (int i = 0; i < net.getNeurons().size(); i++) {
 				for (int k = 0; k < net.getNeurons().get(i).size(); k++) {
-
-					g.setColor(Color.red);
+					
 					neur = net.getNeurons().get(i).get(k);
+					if (winners != null && winners.contains(neur))
+						g.setColor(Color.green);
+					else 
+						g.setColor(Color.red);
 
 					// System.out.print("("+neur.getWeights().get(0)*echelle+";"+neur.getWeights().get(1)*echelle+")"+"|");
                                        
                                         
-					g.fill3DRect((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
-							(int) (neur.getWeights().get(1) * this.getSize().getHeight()), 6, 6, true);
+					g.fillOval((int) (neur.getWeights().get(0) * this.getSize().getWidth()),
+							(int) (neur.getWeights().get(1) * this.getSize().getHeight()), 5, 5);
                                         
                                         
                                         //System.out.println("position : "+(int) (neur.getWeights().get(0) * this.getSize().getWidth())+" , "+
@@ -124,7 +142,7 @@ public class JFreeArm2D extends JPanel implements Observer {
                                         
                                         //g.fillOval(Math.round(neur.getWeights().get(0)) + 276, Math.round(neur.getWeights().get(1)) + 276, 5, 5);
                                         
-					g.setColor(Color.blue);
+					g.setColor(Color.BLUE);
                                         
 					for (int j = 0; j < neur.getNeighbors().size(); j++) {
                                             /*
@@ -219,7 +237,14 @@ public class JFreeArm2D extends JPanel implements Observer {
 
 			FreeArm tmp = LinkedEnvironment.goal;
 			g.setColor(Color.GREEN);
-			g.fillOval(tmp.endX() + (int) (this.getSize().getWidth()/2)-5, tmp.endY() + (int) (this.getSize().getHeight()/2)-5, 10, 10);
+			if (LinkedEnvironment.modedefonctionnement)
+				g.fillOval((int)(tmp.getPosX() * this.getSize().getWidth()), (int)(tmp.getPosY() * this.getSize().getHeight()), 10, 10);
+			else
+				g.fillOval((int)(tmp.normEndX() * this.getSize().getWidth()), (int)(tmp.normEndY() * this.getSize().getHeight()), 10, 10);
+			/*if (LinkedEnvironment.modedefonctionnement)
+				g.fillOval((int)tmp.getPosX() + (int) (this.getSize().getWidth()/2), (int)tmp.getPosY() + (int) (this.getSize().getHeight()/2), 10, 10);
+			else
+				g.fillOval((int)tmp.endX() + (int) (this.getSize().getWidth()/2), (int)tmp.endY() + (int) (this.getSize().getHeight()/2), 10, 10);*/
 		}
 
 		// else
@@ -243,7 +268,13 @@ public class JFreeArm2D extends JPanel implements Observer {
 		// pol++;
 		Graphics2D g2 = (Graphics2D) g;
                 
-                g2.setColor(Color.CYAN);
+        g2.setColor(Color.CYAN);
+        /*g2.drawLine((int) (this.getSize().getWidth()/2), (int) (this.getSize().getHeight()/2), (int)(arm.normMidX() * this.getSize().getWidth()), (int)(arm.normMidY() * this.getSize().getHeight()));
+        g.fillOval((int)(arm.normMidX() * this.getSize().getWidth()) - 5, (int)(arm.normMidY() * this.getSize().getHeight()) - 5, 10, 10);
+        		
+        g2.drawLine((int)(arm.normMidX() * this.getSize().getWidth()), (int)(arm.normMidY() * this.getSize().getHeight()), (int)(arm.normEndX() * this.getSize().getWidth()), (int)(arm.normEndY() * this.getSize().getHeight()));
+        g2.setColor(Color.MAGENTA);
+        g.fillOval((int)(arm.normEndX() * this.getSize().getWidth()) - 5, (int)(arm.normEndY() * this.getSize().getHeight()) - 5, 10, 10);*/
 		g2.drawLine((int) (this.getSize().getWidth()/2), (int) (this.getSize().getHeight()/2), arm.midX() + (int) (this.getSize().getWidth()/2), arm.midY() + (int) (this.getSize().getHeight()/2));
 		g.fillOval(arm.midX() + (int) (this.getSize().getWidth()/2) - 5, arm.midY() + (int) (this.getSize().getHeight()/2) - 5, 10, 10);
 		

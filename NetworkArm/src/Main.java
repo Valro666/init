@@ -10,14 +10,14 @@ public class Main {
 		
 		LinkedEnvironment world=null;
 		try {
-			world = new LinkedEnvironment(2, 4);
+			world = new LinkedEnvironment(4,2);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		View v = new View(world);
-                world.addObserver(v);
+
     }
     
 }

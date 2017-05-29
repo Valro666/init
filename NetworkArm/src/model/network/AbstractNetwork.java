@@ -44,7 +44,7 @@ public abstract class AbstractNetwork extends Observable{
     	epochs = BasicOptions.nb_epochs;
     	
     	nb_neurons = 0;
-	neurons = new ArrayList<ArrayList<Neuron>>();
+    	neurons = new ArrayList<ArrayList<Neuron>>();
 		
     }
     
@@ -113,4 +113,16 @@ public abstract class AbstractNetwork extends Observable{
 	public ArrayList<ArrayList<Neuron>> getNeurons(){
     	return neurons;
     }
+
+	public Neuron getNeuron(int number) {
+		for (ArrayList<Neuron> lns : neurons)
+		{
+			for (Neuron neuron : lns)
+			{
+				if (neuron.getNumber() == number)
+					return neuron;
+			}
+		}
+		return null;
+	}
 }

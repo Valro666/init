@@ -5,8 +5,8 @@ import javax.swing.*;
 
 import src.model.*;
 import src.model.options.*;
-import view.arm.*;
-import view.network.*;
+import src.view.arm.*;
+import src.view.network.*;
 import src.control.*;
 import src.view.arm.ArmOptionsFrame;
 import src.view.arm.ExperienceViewer;
@@ -105,7 +105,7 @@ public class View extends JFrame implements Observer {
 
 		freedraw.repaint();
 
-		// We verify if there is a process occurring
+		// We verify if there is a process is occurring
 		if (BasicOptions.stopped.bool()) {
 			buttons.change(false);
 			options.setDisabled(false);

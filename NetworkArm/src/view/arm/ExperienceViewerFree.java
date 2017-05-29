@@ -75,7 +75,8 @@ public class ExperienceViewerFree extends JPanel {
 		command_viewer = new CommandViewer(new Dimension(800, 150));
 
 		errors_viewer = new GraphViewer(parent, new Dimension(500, 500));
-
+		p.getWorld().addObserver(errors_viewer);
+		
 		add(_jArm, BorderLayout.CENTER);
 		add(command_viewer, BorderLayout.SOUTH);
 		add(errors_viewer, BorderLayout.EAST);

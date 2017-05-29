@@ -58,8 +58,8 @@ public class Arm extends ArmModel {
 	double[] _I = {0.025, 0.045 };
 	/** Masses : kg */
 	double[] _m = {1.4, 1.1};
-//	/** Length : m */
-//	double[] _l = {0.30, 0.35};
+	/** Length : m */
+	double[] _l = {0.30, 0.35};
 	/** Distance to center of mass : m */
 	double[] _s = {0.11, 0.16};
 	/** Friction */
@@ -76,7 +76,7 @@ public class Arm extends ArmModel {
 	public Arm() {
 		super();
 		// Length
-		_l = new double[] {0.30, 0.35};
+		//_l = new double[] {0.30, 0.35};
 		// Default arm position;
 		_q = _q.times(0.0);
 		_dq = _dq.times(0.0);
